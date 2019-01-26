@@ -10,6 +10,8 @@
             <th>TAGS</th>
             <th>Comments</th>
             <th>DATE</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>

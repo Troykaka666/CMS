@@ -23,7 +23,7 @@
                 </h1>
 
                 <?php 
-                    $query = "SELECT * FROM posts";
+                    $query = "SELECT * FROM posts WHERE post_status = 'published' ";
                     $select_all_posts_query = mysqli_query($con, $query);
 
                     while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
@@ -38,19 +38,23 @@
                         $post_comment_count = $row['post_comment_count'];
                         $post_status = $row['post_status'];
 
-                        echo      "<h2>
-                        <a href='post.php?p_id=$post_id'>$post_title</a>
-                    </h2>
-                    <p class='lead'>
-                        by <a href='index.php'>$post_author</a>
-                    </p>
-                    <p><span class='glyphicon glyphicon-time'></span> Posted on $post_date</p>
-                    <hr>
-                    <img class='img-responsive' src='images/$post_image' alt=''>
-                    <hr>
-                    <p>$post_content</p>
-                    <a class='btn btn-primary' href='#'>Read More <span class='glyphicon glyphicon-chevron-right'></span></a>
-                    <hr>";
+                        if($post_status !== 'published'){
+                            echo "<h1>No Post Found</h1>";
+                        }else{
+                            echo      "<h2>
+                            <a href='post.php?p_id=$post_id'>$post_title</a>
+                        </h2>
+                        <p class='lead'>
+                            by <a href='index.php'>$post_author</a>
+                        </p>
+                        <p><span class='glyphicon glyphicon-time'></span> Posted on $post_date</p>
+                        <hr>
+                        <img class='img-responsive' src='images/$post_image' alt=''>
+                        <hr>
+                        <p>$post_content</p>
+                        <a class='btn btn-primary' href='#'>Read More <span class='glyphicon glyphicon-chevron-right'></span></a>
+                        <hr>";
+                        }
                     }
                 
                 ?>

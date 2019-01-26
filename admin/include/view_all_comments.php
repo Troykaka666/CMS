@@ -20,7 +20,7 @@
         $select_comments = mysqli_query($con, $query);
     
     
-        while ($row = mysqli_fetch_assoc($select_posts)) {
+        while ($row = mysqli_fetch_assoc($select_comments)) {
             $comment_id = $row['comment_id']; 
             $comment_post_id = $row['comment_post_id']; 
             $comment_author = $row['comment_author']; 
@@ -35,10 +35,11 @@
             <td>$comment_id</td>
             <td>$comment_author</td>
             <td>$comment_content</td>
-            <td>$comment_email</td>";
+            <td>$comment_email</td>
+            <td>$comment_status</td>";
 
-            $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id}";
-            $select_categories = mysqli_query($con, $query);
+            // $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id}";
+            // $select_categories = mysqli_query($con, $query);
 
             //  confirm($select_categories);
     
@@ -47,7 +48,17 @@
             //     $cat_title = $row['cat_title'];
             //     echo "<td>{$cat_title}</td>";  
             // }
-
+            $query = "SELECT * FROM posts WHERE post_id = $comment_post_id";
+            $select_post_id_query = mysqli_query($con, $query);
+            while($row = mysqli_fetch_assoc($select_post_id_query)){
+                $post_id = $row['post_id'];
+                $post_title = $row['post_title'];
+                echo "<td><a href='../post.php?p_id=$post_id'>$post_title</a></td>";
+            }
+            echo "<td>{$comment_date}</td>
+            <td><a href='comments.php?approve={$comment_id}'>Approve</a></td>
+            <td><a href='comments.php?unapprove={$comment_id}'>Unapprove</a></td>
+            <td><a href='comments.php?delete={$comment_id}'>Delete</a></td></tr>";
 
               
      }
@@ -55,25 +66,31 @@
     
     
     ?>
-    <td><img class='img-responsive' style='width:200px; height:100px;' src='../images/{$post_image}'></td>                        
-    <td>{$post_tags}</td>
-    <td>{$post_comment_count}</td>
-    <td>{$post_date}</td>
-    <td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>
-    <td><a href='posts.php?delete={$post_id}'>Delete</a></td>
-    
-</tr>
+
         
     </tbody>
 </table>
 
 <?php 
+if(isset($_GET['approve'])){
+    $comment_post_id = $_GET['approve'];
+    $query = "UPDATE comments SET comment_status = 'approve' WHERE comment_id = $comment_post_id";
+    $approve_query = mysqli_query($con, $query);
+    header("Location: comments.php"); 
+}
+if(isset($_GET['unapprove'])){
+    $comment_post_id = $_GET['unapprove'];
+    $query = "UPDATE comments SET comment_status = 'unapprove' WHERE comment_id = $comment_post_id";
+    $unapprove_query = mysqli_query($con, $query);
+    header("Location: comments.php"); 
+}
+
 if(isset($_GET['delete'])){
-    $the_post_id = $_GET['delete'];
-    $query = "DELETE FROM posts WHERE post_id = {$the_post_id} ";
+    $comment_post_id = $_GET['delete'];
+    $query = "DELETE FROM comments WHERE comment_id = {$comment_post_id} ";
     $delete_query = mysqli_query($con, $query);
 
-    header("Location: posts.php"); 
+    header("Location: comments.php"); 
 }
 
 ?>
