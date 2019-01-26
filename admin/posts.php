@@ -32,12 +32,15 @@
                         case 'add_post':
                             include "include/add_post.php";
                             break;
-                        
+                        case 'edit_post':
+                            include "include/edit_post.php";
+                            break;
                         default:
                             include "include/view_all_posts.php"; 
                             break;
                     }
 
+                  
                     
                     ?>
 

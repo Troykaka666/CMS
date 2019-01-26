@@ -11,7 +11,7 @@ function add_newpost(){
     global $con;
     if(isset($_POST['create_post'])){ 
         $post_title = $_POST['title']; 
-        $post_category_id = $_POST['post_category_id']; 
+        $post_category_id = $_POST['post_category']; 
         $post_author = $_POST['author'];  
         $post_status = $_POST['post_status'];
                                             
@@ -80,6 +80,7 @@ function delete_category(){
     header("Location: categories.php");    
     }
 }
+
 
 
 
